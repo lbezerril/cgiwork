@@ -23,7 +23,7 @@ MESSAGE_ERROR="CGIWork Error:";
 function replace_variables() {
 	for varname in $(/usr/bin/env | cut -d '=' -f1 | grep "${CGIVAR}_"); do
 		expressionvar="\${$(echo $varname | cut -d '_' -f2-)}";
-		varvalue="$(echo "${!varname}" | sed 's/\\/\\\\/g;s/\//\\\//g')";
+		varvalue="$(echo "${!varname}" | sed 's/\\/\\\\/g;s/\//\\\//g;s/&/\\&/g')";
 		sedexpression+="s/${expressionvar}/${varvalue}/g;";
 	done;
 	cat "$OUTPUT_FILE" | sed "$sedexpression";
