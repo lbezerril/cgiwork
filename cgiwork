@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Considerar a possibilidade do uso de "HashMap" para substituir variaveis!
+# Usar sed "s/$FIND/$REPLACE/g" quando possível para maior legitividade
+# Em hipótese alguma, o script deve falhar dentro do framework (comando 2>/dev/null || echo erro)
+
 #######################################################################
 #                                                                     #
 #                               CGIWork                               #
@@ -29,6 +33,7 @@ function replace_variables() {
 	cat "$OUTPUT_FILE" | sed "$sedexpression";
 }
 
+# $# -lt 1
 if [[ "$#" -ne 1 ]]; then
 	echo "$MESSAGE_ERROR Output file unspecified!";
 	exit 1;

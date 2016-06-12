@@ -13,3 +13,6 @@ done;
 export CGIVAR_option_list;
 
 cgiwork "example.html"
+
+# Verificar possibilidade de executar o cgiwork com "."
+# . cgiwork
