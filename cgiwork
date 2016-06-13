@@ -20,27 +20,35 @@
 #                                                                     #
 #######################################################################
 
-KEY_VALUE_ARRAY=( "$@" );
-OUTPUT_FILE="${KEY_VALUE_ARRAY[0]}" && unset KEY_VALUE_ARRAY[0];
+ARRAY=( "$@" );
+INFO="${ARRAY[0]}" && unset ARRAY[0];
 MESSAGE_ERROR="CGIWork Error:";
 
-if [[ ! -f "$OUTPUT_FILE" ]]; then
+case "$(echo "$INFO" | grep "type")" in
+	"plain" ) echo "";;
+	"json" ) echo "";;
+	"xml" ) echo "";;
+	"rest" ) echo "TODO"; exit 0;;
+	* ) exit 1 ;;
+esac
+
+if [[ ! -f "$INFO" ]]; then
 	echo "$MESSAGE_ERROR Output file does not exist! Be sure to pass the output file as the first element of the array.";
 	exit 1;
-elif [[ ! -r "$OUTPUT_FILE" ]]; then
+elif [[ ! -r "$INFO" ]]; then
 	echo "$MESSAGE_ERROR Output file is not readable!";
 	exit 1;
 fi;
 
 function replace_variables() {
-	for key_value in "${KEY_VALUE_ARRAY[@]}"; do
+	for key_value in "${ARRAY[@]}"; do
 		local key="$(echo "$key_value" | cut -d= -f1)"; #local key="$(echo "$key_value" | grep -o "^.[^=]*")";
 		local value="$(echo "$key_value" | cut -d= -f2-)";
 		key="\${$key}";
 		value="$(echo "${value}" | sed 's/\\/\\\\/g;s/\//\\\//g;s/&/\\&/g')";
 		local sedexpression+="s/${key}/${value}/g;";
 	done;
-	cat "$OUTPUT_FILE" | sed "$sedexpression";
+	cat "$INFO" | sed "$sedexpression";
 }
 
 replace_variables;
