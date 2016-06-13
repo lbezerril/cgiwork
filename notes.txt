@@ -8,3 +8,10 @@ TODO
 - Incluir versão aqui Ex:(0.1.5) tanto no README.md quanto no cgiwork
 - Usar cores (Função message)
 - Incluir documentação detalhada (Incluir "How to test examples")
+
+
+IDEAS
+HTML=("type=plain;file=templates/example.html;"); # Replace
+JSON=("type=json;"); # JSON=("type=json"); # Montagem de objeto JSON
+XML=("type=xml;"); # Montagem de objeto XML
+REST=("type=rest;method=POST;code=200;response-type=json;");
