@@ -1,6 +1,7 @@
 #!/bin/bash
 echo -e "Content-type: text/html\n"
 
+# Output File (Should be the first element of the array):
 ARRAY=("example.html");
 
 ARRAY+=("visitor_number=$RANDOM");
@@ -15,6 +16,3 @@ done;
 ARRAY+=("option_list=$option_list");
 
 cgiwork "${ARRAY[@]}"
-
-# Verificar possibilidade de executar o cgiwork com "."
-# . cgiwork
