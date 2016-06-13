@@ -1,0 +1,9 @@
+{
+	"name": "${name}",
+	"on": ${on},
+	"console_port": ${console_port},
+	"application_port" ${application_port},
+	"modules": [@modules.json],
+	"mocks": [@STRING],
+	"temp_size": ${temp_size}
+}

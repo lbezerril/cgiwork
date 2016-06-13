@@ -1,0 +1,5 @@
+Pedaço de JSON, e include! -- (Quando for lista []) -- (Include não pode ser por variavel)
+
+Opções:
+- Montar via shell script utilizando variaveis (inviavel no caso de cascata)
+- Representar cada "classe" por um arquivo template e depois dar um include na "root class" - (http://json2csharp.com/)

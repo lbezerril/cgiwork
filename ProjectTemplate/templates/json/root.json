@@ -1,0 +1,4 @@
+{
+	"applications": @applications.json,
+	"web_service": @web_service.json
+}

@@ -1,0 +1,5 @@
+{
+	"name": "${name}",
+	"on": ${on},
+	"shared_lib": ${shared_lib}
+}

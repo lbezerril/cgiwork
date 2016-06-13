@@ -1,0 +1,58 @@
+{
+	"applications": {
+		"git": {
+			"current_branch": "master",
+			"branches": ["A", "B"]
+		},
+		"was": {
+			"was_home": "/opt/IBM/WebSphere/AppServer",
+			"profiles": [{
+				"name": "AppSrv01",
+				"on": true,
+				"console_port": 9060,
+				"application_port": 9080,
+				"modules": [{
+					"name": "Module-A",
+					"on": true,
+					"shared_lib": false
+				}, {
+					"name": "Module-B",
+					"on": false,
+					"shared_lib": true
+				}],
+				"mocks": ["GetListDriver", "UpdateDriver", "AddDriver"],
+				"temp_size": 25
+			}, {
+				"name": "AppSrv02",
+				"on": false,
+				"console_port": 9061,
+				"application_port": 9081,
+				"modules": [{
+					"name": "Module-A",
+					"on": true,
+					"shared_lib": false
+				}, {
+					"name": "Module-B",
+					"on": false,
+					"shared_lib": true
+				}],
+				"mocks": ["GetListDriver", "UpdateDriver", "AddDriver"],
+				"temp_size": 0
+			}]
+		}
+	},
+	"web_service": {
+		"endpoint": "http://service.com/",
+		"on": true,
+		"services": [{
+			"name": "GetListDriver",
+			"on": true
+		}, {
+			"name": "AddDriver",
+			"on": true
+		}, {
+			"name": "UpdateDriver",
+			"on": false
+		}]
+	}
+}
