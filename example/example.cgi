@@ -1,18 +1,20 @@
 #!/bin/bash
 echo -e "Content-type: text/html\n"
 
-export CGIVAR_visitor_number="$RANDOM";
-export CGIVAR_date="$(date +'%D %T')";
+ARRAY=();
 
-CGIVAR_option_list="<option>Select...</option>";
+ARRAY+=("visitor_number=$RANDOM");
+ARRAY+=("date=$(date +'%D %T')");
+
+option_list="<option>Select...</option>";
 for i in $(ls output/*.txt); do
 	filename="$(echo $i | cut -d '/' -f2-)";
-	CGIVAR_option_list+="<option value='$i'>$filename</option>";
+	option_list+="<option value='$i'>$filename</option>";
 done;
 
-export CGIVAR_option_list;
+ARRAY+=("option_list=$option_list");
 
-cgiwork "example.html"
+cgiwork "${ARRAY[@]}" "example.html"
 
 # Verificar possibilidade de executar o cgiwork com "."
 # . cgiwork
