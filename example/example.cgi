@@ -1,7 +1,7 @@
 #!/bin/bash
 echo -e "Content-type: text/html\n"
 
-ARRAY=();
+ARRAY=("example.html");
 
 ARRAY+=("visitor_number=$RANDOM");
 ARRAY+=("date=$(date +'%D %T')");
@@ -14,7 +14,7 @@ done;
 
 ARRAY+=("option_list=$option_list");
 
-cgiwork "${ARRAY[@]}" "example.html"
+cgiwork "${ARRAY[@]}"
 
 # Verificar possibilidade de executar o cgiwork com "."
 # . cgiwork

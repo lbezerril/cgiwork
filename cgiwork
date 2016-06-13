@@ -21,22 +21,22 @@
 #                                                                     #
 #######################################################################
 
-KEY_VALUE_ARRAY=( "$@" ); # ( "$1" )
-OUTPUT_FILE="$2";
+KEY_VALUE_ARRAY=( "$@" );
+OUTPUT_FILE="${KEY_VALUE_ARRAY[0]}" && unset KEY_VALUE_ARRAY[0];
 MESSAGE_ERROR="CGIWork Error:";
 
 function replace_variables() {
 	for key_value in "${KEY_VALUE_ARRAY[@]}"; do
-		local key="";
-		local key_expression="\${$key}";
-		local value="$(echo "${value}" | sed 's/\\/\\\\/g;s/\//\\\//g;s/&/\\&/g')";
-		local sedexpression+="s/${key_expression}/${value}/g;";
+		local key="$(echo "$key_value" | cut -d= -f1)"; #local key="$(echo "$key_value" | grep -o "^.[^=]*")";
+		local value="$(echo "$key_value" | cut -d= -f2-)";
+		key="\${$key}";
+		value="$(echo "${value}" | sed 's/\\/\\\\/g;s/\//\\\//g;s/&/\\&/g')";
+		local sedexpression+="s/${key}/${value}/g;";
 	done;
 	cat "$OUTPUT_FILE" | sed "$sedexpression";
 }
 
-# $# -lt 1
-if [[ "$#" -ne 1 ]]; then
+if [[ "$#" -lt 1 ]]; then
 	echo "$MESSAGE_ERROR Output file unspecified!";
 	exit 1;
 else
