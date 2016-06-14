@@ -1,7 +1,7 @@
 #!/bin/bash
 echo -e "Content-type: text/html\n"
 
-# Type of response and output file (Should be the first element of the array):
+# The type of response and the output file (Should be the first element of the array):
 ARRAY=("type=plain;file=example.html;");
 
 ARRAY+=("visitor_number=$RANDOM");

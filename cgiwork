@@ -22,33 +22,16 @@
 
 ARRAY=( "$@" );
 INFO="${ARRAY[0]}" && unset ARRAY[0];
+TYPES_SUPPORTED="plain|json|xml";
 MESSAGE_ERROR="CGIWork Error:";
 
-case "$(echo "$INFO" | grep "type")" in
-	"plain" ) echo "";;
-	"json" ) echo "";;
-	"xml" ) echo "";;
-	"rest" ) echo "TODO"; exit 0;;
-	* ) exit 1 ;;
-esac
-
-if [[ ! -f "$INFO" ]]; then
-	echo "$MESSAGE_ERROR Output file does not exist! Be sure to pass the output file as the first element of the array.";
-	exit 1;
-elif [[ ! -r "$INFO" ]]; then
-	echo "$MESSAGE_ERROR Output file is not readable!";
+# tentar simplificar com grep:
+type="$(echo "$INFO" | grep -E -o "type=($TYPES_SUPPORTED);")";
+if [[ "$type" != "" ]]; then
+	type="$(echo "$type" | grep -E -o "($TYPES_SUPPORTED)")";
+	#PATH=$PATH:/usr/local
+	. cgiwork_$type;
+else
+	echo "$MESSAGE_ERROR Invalid type!";
 	exit 1;
 fi;
-
-function replace_variables() {
-	for key_value in "${ARRAY[@]}"; do
-		local key="$(echo "$key_value" | cut -d= -f1)"; #local key="$(echo "$key_value" | grep -o "^.[^=]*")";
-		local value="$(echo "$key_value" | cut -d= -f2-)";
-		key="\${$key}";
-		value="$(echo "${value}" | sed 's/\\/\\\\/g;s/\//\\\//g;s/&/\\&/g')";
-		local sedexpression+="s/${key}/${value}/g;";
-	done;
-	cat "$INFO" | sed "$sedexpression";
-}
-
-replace_variables;

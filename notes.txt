@@ -11,7 +11,20 @@ TODO
 
 
 IDEAS
+
+# Replace
 HTML=("type=plain;file=templates/example.html;"); # Replace
-JSON=("type=json;"); # JSON=("type=json"); # Montagem de objeto JSON
-XML=("type=xml;"); # Montagem de objeto XML
+
+
+# Marshal (Object to data format)
+JSON=("type=json;process=marshal;"); # JSON=("type=json"); # Montagem de objeto JSON
+XML=("type=xml;process=marshal;"); # Montagem de objeto XML
+
+
+# Unmarshal (Data format to object)
+JSON=("type=json;process=unmarshal;"); # JSON=("type=json"); # Unmarshal de objeto JSON
+XML=("type=xml;process=unmarshal;"); # Unmarshal de objeto XML
+
+
+# RESTful
 REST=("type=rest;method=POST;code=200;response-type=json;");

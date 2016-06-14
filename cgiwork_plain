@@ -1,0 +1,25 @@
+# if ... Execute pelo cgiwork; exit 1;
+
+# tentar simplificar com grep:
+OUTPUT_FILE="$(echo "$INFO" | grep -E -o "file=(.*);" | cut -d= -f2-)"; # | tr -d ";"
+echo $OUTPUT_FILE;
+if [[ ! -f "$OUTPUT_FILE" ]]; then
+	echo "$MESSAGE_ERROR Output file does not exist! Be sure to pass the output file as the first element of the array.";
+	exit 1;
+elif [[ ! -r "$OUTPUT_FILE" ]]; then
+	echo "$MESSAGE_ERROR Output file is not readable!";
+	exit 1;
+fi;
+
+function replace_variables() {
+	for key_value in "${ARRAY[@]}"; do
+		local key="$(echo "$key_value" | cut -d= -f1)"; #local key="$(echo "$key_value" | grep -o "^.[^=]*")";
+		local value="$(echo "$key_value" | cut -d= -f2-)";
+		key="\${$key}";
+		value="$(echo "${value}" | sed 's/\\/\\\\/g;s/\//\\\//g;s/&/\\&/g')";
+		local sedexpression+="s/${key}/${value}/g;";
+	done;
+	cat "$OUTPUT_FILE" | sed "$sedexpression";
+}
+
+replace_variables;
