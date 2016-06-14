@@ -23,13 +23,11 @@
 ARRAY=( "$@" );
 INFO="${ARRAY[0]}" && unset ARRAY[0];
 TYPES_SUPPORTED="plain|json|xml";
+PATH=$PATH:/opt/cgiwork/scripts
 MESSAGE_ERROR="CGIWork Error:";
 
-# tentar simplificar com grep:
-type="$(echo "$INFO" | grep -E -o "type=($TYPES_SUPPORTED);")";
+type="$(echo "$INFO" | grep -E -o "type=($TYPES_SUPPORTED);" | sed 's/type=//g;s/;//g')";
 if [[ "$type" != "" ]]; then
-	type="$(echo "$type" | grep -E -o "($TYPES_SUPPORTED)")";
-	#PATH=$PATH:/usr/local
 	. cgiwork_$type;
 else
 	echo "$MESSAGE_ERROR Invalid type!";
