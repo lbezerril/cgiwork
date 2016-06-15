@@ -39,9 +39,9 @@ function is_expected_value() {
 
 TYPE="$(get_property type)";
 
-if $(is_expected_value $TYPE $EXPECTED_VALUES); then
-	. cgiwork_$TYPE;
-else
+if ! $(is_expected_value $TYPE $EXPECTED_VALUES); then
 	echo "$MESSAGE_ERROR Invalid type!";
 	exit 1;
 fi;
+
+. cgiwork_$TYPE;
