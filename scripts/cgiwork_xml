@@ -1,0 +1,7 @@
+EXPECTED_VALUES="marshal|unmarshal";
+PROCESS="$(get_property process)";
+
+if ! $(is_expected_value $PROCESS $EXPECTED_VALUES); then
+	echo "$MESSAGE_ERROR Invalid process!";
+	exit 1;
+fi;

@@ -1,4 +1,4 @@
-OUTPUT_FILE="$(echo "$INFO" | grep -E -o 'file=(.*);' | sed 's/file=//g;s/;//g')";
+OUTPUT_FILE="$(get_property file)";
 
 if [[ ! -f "$OUTPUT_FILE" ]]; then
 	echo "$MESSAGE_ERROR Output file does not exist! Be sure to pass the output file as the first element of the array.";
@@ -8,7 +8,7 @@ elif [[ ! -r "$OUTPUT_FILE" ]]; then
 	exit 1;
 fi;
 
-function replace_variables() {
+function get_sedexpression_replace() {
 	for key_value in "${ARRAY[@]}"; do
 		local key="$(echo "$key_value" | cut -d= -f1)"; #local key="$(echo "$key_value" | grep -o "^.[^=]*")";
 		local value="$(echo "$key_value" | cut -d= -f2-)";
@@ -16,7 +16,7 @@ function replace_variables() {
 		value="$(echo "${value}" | sed 's/\\/\\\\/g;s/\//\\\//g;s/&/\\&/g')";
 		local sedexpression+="s/${key}/${value}/g;";
 	done;
-	cat "$OUTPUT_FILE" | sed "$sedexpression";
+	echo "$sedexpression";
 }
 
-replace_variables;
+cat "$OUTPUT_FILE" | sed "$(get_sedexpression_replace)";

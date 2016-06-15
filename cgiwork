@@ -21,14 +21,26 @@
 #######################################################################
 
 ARRAY=( "$@" );
-INFO="${ARRAY[0]}" && unset ARRAY[0];
-TYPES_SUPPORTED="plain|json|xml";
+PROPERTIES="${ARRAY[0]}" && unset ARRAY[0];
+EXPECTED_VALUES="plain|json|xml";
 PATH=$PATH:/opt/cgiwork/scripts
 MESSAGE_ERROR="CGIWork Error:";
 
-type="$(echo "$INFO" | grep -E -o "type=($TYPES_SUPPORTED);" | sed 's/type=//g;s/;//g')";
-if [[ "$type" != "" ]]; then
-	. cgiwork_$type;
+function get_property() {
+	# $1: property name
+	echo "$PROPERTIES" | grep -Eo "$1=(.*);" | sed "s/$1=//g;s/;.*//g";
+}
+
+function is_expected_value() {
+	# $1: value
+	# $2: expected values separated by "|"
+	echo "$1" | grep -Eq "^($2)$";
+}
+
+TYPE="$(get_property type)";
+
+if $(is_expected_value $TYPE $EXPECTED_VALUES); then
+	. cgiwork_$TYPE;
 else
 	echo "$MESSAGE_ERROR Invalid type!";
 	exit 1;
