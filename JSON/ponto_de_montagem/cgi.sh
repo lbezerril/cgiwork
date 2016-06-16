@@ -24,7 +24,7 @@ function get_attributes() {
 		echo "${ARRAY[$i]}";
 	done |
 	grep -Eo "(^$1[.][^.=]*(..|=.*))" |
-	sed '/=/! { s/\(.*\)\.\([a-Z]\)$/\1.X/;s/\(.*\)\.\([0-9]\)$/\1.0/; }' |
+	sed '/=/! { s/[a-Z]$/X/g;s/[0-9]$/0/g; }' |
 	sort -u;
 
 	FIRST_ITERATION=1;
@@ -51,8 +51,10 @@ function attribute_is_value_array() {
 }
 
 function write_value() {
-	#parei aqui: trocar cut,rev,cut por um regex em grep
-	echo "\"$(echo "$1" | cut -d'=' -f1 | rev | cut -d'.' -f1 | rev)\": $(echo "$1" | cut -d'=' -f2-),";
+	# $1: attribute
+	local key="$(echo "$1" | cut -d'=' -f1 | grep -Eo '[^.]*$')";
+	local value="$(echo "$1" | cut -d'=' -f2-)";
+	echo "\"$key\": $value,";
 	# Remove element from array
 }
 
@@ -62,9 +64,9 @@ function generate_class() {
 	# For each attribute of class
 	echo "$(get_attributes $1)" | while read attribute; do
 		if attribute_is_value "$attribute"; then write_value "$attribute"; continue; fi;
-		#if attribute_is_value "$i"; then write_value "$i"; continue; fi;
-		#if attribute_is_value "$i"; then write_value "$i"; continue; fi;
-		#if attribute_is_value "$i"; then write_value "$i"; continue; fi;
+		#if attribute_is_object_array "$attribute"; then write_value "$attribute"; continue; fi;
+		#if attribute_is_object "$attribute"; then write_value "$attribute"; continue; fi;
+		#if attribute_is_value_array "$attribute"; then write_value "$attribute"; continue; fi;
 	done;
 	#echo -n "something,"; echo -e "\b}";
 	echo "}";

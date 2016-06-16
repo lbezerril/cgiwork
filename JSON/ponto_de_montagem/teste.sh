@@ -51,4 +51,4 @@ ARRAY+=("web_service.services.1.on=true");
 ARRAY+=("web_service.services.2.name=\"UpdateDriver\"");
 ARRAY+=("web_service.services.2.on=false");
 
-#./cgi.sh "${ARRAY[@]}";
+./cgi.sh "${ARRAY[@]}";
