@@ -21,11 +21,11 @@ function get_attributes() {
 	# $1: class name
 	for i in "${!ARRAY[@]}"; do
 		if is_first_iteration; then prepare_array $i; fi;
-		echo "${ARRAY[$i]}";
+		echo "$i|${ARRAY[$i]}";
 	done |
-	grep -Eo "(^$1[.][^.=]*(..|=.*))" |
+	grep -Eo "(^([0-9]*)\|$1[.][^.=]*(..|=.*))" |
 	sed '/=/! { s/[a-Z]$/X/g;s/[0-9]$/0/g; }' |
-	sort -u;
+	sort -u -t'|' -k2;
 
 	FIRST_ITERATION=1;
 }
@@ -52,10 +52,11 @@ function attribute_is_value_array() {
 
 function write_value() {
 	# $1: attribute
+	local index="$(echo "$1" | cut -d'|' -f1)";
 	local key="$(echo "$1" | cut -d'=' -f1 | grep -Eo '[^.]*$')";
 	local value="$(echo "$1" | cut -d'=' -f2-)";
 	echo "\"$key\": $value,";
-	# Remove element from array
+	unset ARRAY[$index]; # Remove element from array
 }
 
 function generate_class() {
