@@ -7,8 +7,11 @@ function is_first_iteration() {
 	return $FIRST_ITERATION;
 }
 
-function fix_null() {
+function prepare_array() {
 	# $1: index of ARRAY
+	# Add dot:
+	ARRAY[$1]=".${ARRAY[$1]}";
+	# Fix null:
 	if [ "$(echo "${ARRAY[$1]}" | cut -d'=' -f2- | sed 's/ //g')" == "" ]; then
 		ARRAY[$1]="$(echo "${ARRAY[$1]}" | cut -d'=' -f-1)=null";
 	fi;
@@ -17,15 +20,10 @@ function fix_null() {
 function get_attributes() {
 	# $1: class name
 	for i in "${!ARRAY[@]}"; do
-		if is_first_iteration; then fix_null $i; fi;
+		if is_first_iteration; then prepare_array $i; fi;
 		echo "${ARRAY[$i]}";
 	done |
-
-	grep -Eo "^$1[^.]*..|^$1[^.=]*[=].*" |
-	#(^$1[.][^.=]*..)
-	#(^$1[.][^.=]*(..|=.*)) # Esse aqui
-
-	#grep -Eo "^$1[.][^.]*..|^$1[.][^.=]*[=].*" |
+	grep -Eo "(^$1[.][^.=]*(..|=.*))" |
 	sed '/=/! { s/\(.*\)\.\([a-Z]\)$/\1.X/;s/\(.*\)\.\([0-9]\)$/\1.0/; }' |
 	sort -u;
 
@@ -72,5 +70,4 @@ function generate_class() {
 	echo "}";
 }
 
-generate_class "applications.git.";
-#generate_class
+generate_class

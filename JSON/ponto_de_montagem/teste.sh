@@ -2,7 +2,7 @@
 
 ARRAY=();
 
-ARRAY+=("string1=\"Eu sei que hoje já é Domingo!!!\"");
+ARRAY+=("string1=\"Eu sei que hoje. já é Domingo!!!\"");
 ARRAY+=("string2=\"Eu sei que depois de amanhã já é segunda-feira :=\"");
 ARRAY+=("string3=");
 
@@ -51,4 +51,4 @@ ARRAY+=("web_service.services.1.on=true");
 ARRAY+=("web_service.services.2.name=\"UpdateDriver\"");
 ARRAY+=("web_service.services.2.on=false");
 
-./cgi.sh "${ARRAY[@]}";
+#./cgi.sh "${ARRAY[@]}";
