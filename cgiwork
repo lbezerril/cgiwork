@@ -42,6 +42,10 @@ function var_is_null() {
 	if [[ "$1" != "" ]]; then	return 1; fi;
 }
 
+function is_running_interactivelly() {
+	if ! [ -t 0 ]; then return 1; fi;
+}
+
 TYPE="$(get_property type)";
 
 if ! $(is_expected_value $TYPE $EXPECTED_VALUES); then
