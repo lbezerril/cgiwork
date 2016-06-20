@@ -37,6 +37,11 @@ function is_expected_value() {
 	echo "$1" | grep -Eq "^($2)$";
 }
 
+function var_is_null() {
+	# $1: variable;
+	if [[ "$1" != "" ]]; then	return 1; fi;
+}
+
 TYPE="$(get_property type)";
 
 if ! $(is_expected_value $TYPE $EXPECTED_VALUES); then
