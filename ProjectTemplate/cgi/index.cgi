@@ -1,4 +1,6 @@
 #!/bin/bash
 echo -e "Content-type: text/html\n"
 
-cgiwork "../templates/html/index.html"
+ARRAY=("type=plain;file=../templates/html/index.html;");
+
+cgiwork "${ARRAY[@]}"
