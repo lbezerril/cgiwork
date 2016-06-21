@@ -11,13 +11,7 @@ function get_sedexpression_replace() {
 	echo "$sedexpression";
 }
 
-function read_from_stdin() {
-	while read line; do
-		echo "$line";
-	done;
-}
-
-if var_is_null "$OUTPUT_FILE"; then
+if var_is_empty "$OUTPUT_FILE"; then
 	if ! is_running_interactivelly; then read_from_stdin; else exit; fi;
 else
 	fail_if_file_is_invalid "$OUTPUT_FILE";

@@ -37,13 +37,19 @@ function is_expected_value() {
 	echo "$1" | grep -Eq "^($2)$";
 }
 
-function var_is_null() {
+function var_is_empty() {
 	# $1: variable;
 	if [[ "$1" != "" ]]; then	return 1; fi;
 }
 
 function is_running_interactivelly() {
 	if ! [ -t 0 ]; then return 1; fi;
+}
+
+function read_from_stdin() {
+	while read line; do
+		echo "$line";
+	done;
 }
 
 function fail_if_file_is_invalid() {
@@ -59,9 +65,9 @@ function fail_if_file_is_invalid() {
 
 TYPE="$(get_property type)";
 
-if ! $(is_expected_value $TYPE $EXPECTED_VALUES); then
+if ! is_expected_value $TYPE $EXPECTED_VALUES; then
 	echo "$MESSAGE_ERROR Invalid type!";
 	exit 1;
 fi;
 
-. cgiwork_$TYPE;
+. scripts/cgiwork_$TYPE;
