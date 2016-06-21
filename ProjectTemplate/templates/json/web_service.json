@@ -1,5 +1,0 @@
-{
-	"endpoint": "${endpoint}",
-	"on": ${on},
-	"services": [@services.json]
-}

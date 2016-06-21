@@ -1,4 +1,0 @@
-{
-	"current_branch": "${current_branch}",
-	"branches": [@STRING]
-}
