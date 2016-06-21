@@ -70,4 +70,4 @@ if ! is_expected_value $TYPE $EXPECTED_VALUES; then
 	exit 1;
 fi;
 
-. scripts/cgiwork_$TYPE;
+. cgiwork_$TYPE;
