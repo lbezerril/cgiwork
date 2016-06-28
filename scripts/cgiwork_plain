@@ -5,7 +5,7 @@ function get_sedexpression_replace() {
 		local key="$(echo "$key_value" | cut -d= -f1)"; #local key="$(echo "$key_value" | grep -o "^.[^=]*")";
 		local value="$(echo "$key_value" | cut -d= -f2-)";
 		key="\${$key}";
-		value="$(echo "${value}" | sed 's/\\/\\\\/g;s/\//\\\//g;s/&/\\&/g')";
+		value="$(echo "${value}" | sed 's/\\/\\\\/g;s/\//\\\//g;s/&/\\&/g')"; # Special characters: .^$?+*|()[]{}\-
 		local sedexpression+="s/${key}/${value}/g;";
 	done;
 	echo "$sedexpression";
