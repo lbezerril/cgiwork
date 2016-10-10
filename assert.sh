@@ -92,25 +92,7 @@ __assert_equals_exit_status() {
   return $exit_status
 }
 
-
-
 # TODO
 #__assert_not_equals_string() {}
 #__assert_not_equals_numeric() {}
 #__assert_not_equals_exit_status() {}
-
-
-
-###############################################################################
-
-teste() {
-  te
-  echo executando a função
-  return $1
-}
-
-#__assert_equals_string "01" "01"; echo $?
-
-#__assert_equals_numeric 01 1; echo $?
-
-#__assert_equals_exit_status 0 teste; echo $?
