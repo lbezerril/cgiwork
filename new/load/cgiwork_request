@@ -1,0 +1,59 @@
+#!/bin/sh
+
+# variaveis globais (?)
+
+# Retorna o método utilizado na requisição.
+__get_method() {
+  # Caso não encontrado, retorna exit status 1.
+  [ -z "$REQUEST_METHOD" ] && return 1 || echo "$REQUEST_METHOD"
+}
+
+# Retorna o URI utilizado na requisição.
+__get_uri() {
+  # Caso não encontrado, retorna exit status 1.
+  [ -z "$REQUEST_URI" ] && return 1 || echo "$REQUEST_URI"
+}
+
+# Retorna o protocolo utilizado na requisição.
+__get_protocol() {
+  # Caso não encontrado, retorna exit status 1.
+  [ -z "$SERVER_PROTOCOL" ] && return 1 || echo "$SERVER_PROTOCOL"
+}
+
+# Retorna o valor do parâmetro passado. Se nehum parâmetro for passado, retorna
+# todos no formato key=value, um em cada linha.
+# TODO: aceitar mais de um argumento.
+__get_parameters() {
+  # $1: Nome do parâmetro a ser buscado (opcional).
+
+  # Caso não houver parâmetros, retorna exit status 1.
+  [ -z "$QUERY_STRING" ] && return 1
+
+  echo "$QUERY_STRING" | tr '&+' '\n ' |
+  (
+    # Caso nenhum parâmetro for passado, retorna o stdout da pipe.
+    [ -z $1 ] && cat - ||
+    (
+      # Caso o parâmetro for passado, procura o valor dele.
+      while read __parameter; do
+        local __parameter_key="$(echo "$__parameter" | cut -d'=' -f1)"
+        local __parameter_value="$(echo "$__parameter" | cut -d'=' -f2-)"
+        [ "$1" = "$__parameter_key" ] && echo "$__parameter_value" && return 0
+      done
+
+      # Caso o parâmetro passado não foi encontrado, retorna exit status 1.
+      return 1
+    )
+  )
+}
+
+# TODO
+# Referencia: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields
+__get_headers() {
+  # echo "$1: value";
+  for i in "Host: en.wikipedia.org" "Content-Length: 348"; do
+    echo $i;
+  done;
+}
+
+# Outra referencia: https://www.tutorialspoint.com/http/http_requests.htm
