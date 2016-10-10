@@ -52,6 +52,22 @@ __assert_equals_string() {
   return $exit_status
 }
 
+# Realiza um teste de string. Se os valores forem diferentes, retorna 0. Caso
+# contrário retorna 1.
+__assert_not_equals_string() {
+  # $1: Primeiro valor a ser comparado.
+  # $2: Segundo valor a ser comparado.
+
+  [ "$1" != "$2" ]
+  local exit_status=$?
+
+  [ $exit_status -eq 0 ] &&
+    __message "Success!" GREEN ||
+    __message "Fail: values should be different. Actual: [$1]" RED
+
+  return $exit_status
+}
+
 # Realiza um teste numérico. Caso o valor a ser testado foi o mesmo que o
 # esperado, retorna 0. Caso contrário retorna 1. Se os valores informados não
 # forem numéricos, retorna 2.
@@ -93,8 +109,5 @@ __assert_equals_exit_status() {
 }
 
 # TODO
-#__assert_not_equals_string() {}
 #__assert_not_equals_numeric() {}
 #__assert_not_equals_exit_status() {}
-
-# echo "Values should be different. Actual: $actual"
