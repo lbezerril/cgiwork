@@ -96,3 +96,5 @@ __assert_equals_exit_status() {
 #__assert_not_equals_string() {}
 #__assert_not_equals_numeric() {}
 #__assert_not_equals_exit_status() {}
+
+# echo "Values should be different. Actual: $actual"
