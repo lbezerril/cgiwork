@@ -32,7 +32,7 @@ __get_parameters() {
   echo "$QUERY_STRING" | tr '&+' '\n ' |
   (
     # Caso nenhum parâmetro for passado, retorna o stdout da pipe.
-    [ -z $1 ] && cat - ||
+    [ -z "$1" ] && cat - ||
     (
       # Caso o parâmetro for passado, procura o valor dele.
       while read __parameter; do
