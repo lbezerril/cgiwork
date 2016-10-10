@@ -33,7 +33,7 @@ __message() {
   #echo "$color_code --"
   # __message true "a b"
 
-  echo "${color_code}${1}${NC}"
+  /bin/echo -e "${color_code}${1}${NC}"
 }
 
 # Realiza um teste de string. Caso o valor a ser testado foi o mesmo que o
