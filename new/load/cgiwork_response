@@ -1,3 +1,13 @@
 #!/bin/sh
 
 echo "cgiwork_response"
+
+
+# __set sem argumento
+#__set_protocol "HTT/1.1"
+#__set_status 200
+#__set_status 200 "OK"
+#__set_header "Content-type" "text/html"
+#__set_headers $ARRAY # Será necessário ?
+# Commita headers (echo "\n") - Define headers default
+#__flush_buffer

@@ -49,10 +49,25 @@ __get_parameters() {
 # TODO
 # Referencia: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields
 __get_headers() {
-  # echo "$1: value";
+  # $1: Nome do header a ser buscado (opcional).
   for i in "Host: en.wikipedia.org" "Content-Length: 348"; do
     echo $i;
   done;
 }
+
+# Retorna o valor do cookie passado. Se nehum cookie for passado, retorna todos
+# no formato key=value, um em cada linha.
+__get_cookies() {
+  # $1: Nome do cookie a ser buscado (opcional).
+
+  # Caso não encontrado, retorna exit status 1.
+  [ -z "$HTTP_COOKIE" ] && return 1
+}
+
+
+
+# TODO: __get_body - Como pegar arquivo de upload ?
+# TODO: __get_remote_info - Obter informações de rede da requisição
+
 
 # Outra referencia: https://www.tutorialspoint.com/http/http_requests.htm

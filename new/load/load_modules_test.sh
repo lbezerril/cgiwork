@@ -1,6 +1,12 @@
 #!/bin/bash
 
-# ./cgiwork request
+# Modulos a serem carregados:
+# . cgiwork         # Carrega todos os modulos
+# . cgiwork request
+# . cgiwork response
+# . cgiwork checking request response body
+# ./cgiwork (terá o comportamento normal, só não irá carregar as funções)
+
 
 . ../../assert.sh
 . cgiwork request
