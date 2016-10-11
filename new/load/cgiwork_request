@@ -22,11 +22,10 @@ __get_protocol() {
 
 # Retorna o valor do parâmetro passado. Se nehum parâmetro for passado, retorna
 # todos no formato key=value, um em cada linha.
-# TODO: aceitar mais de um argumento.
 __get_parameters() {
   # $1: Nome do parâmetro a ser buscado (opcional).
 
-  # Caso não houver parâmetros, retorna exit status 1.
+  # Caso não encontrado, retorna exit status 1.
   [ -z "$QUERY_STRING" ] && return 1
 
   echo "$QUERY_STRING" | tr '&+' '\n ' |
