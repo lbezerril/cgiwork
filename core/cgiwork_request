@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# variaveis globais (?)
-
 # Retorna o método utilizado na requisição.
 __get_method() {
   # Caso não encontrado, retorna exit status 1.
@@ -47,12 +45,50 @@ __get_parameters() {
 }
 
 # TODO
-# Referencia: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields
 __get_headers() {
   # $1: Nome do header a ser buscado (opcional).
-  for i in "Host: en.wikipedia.org" "Content-Length: 348"; do
-    echo $i;
-  done;
+
+  # Função interna.
+  __get_content_type() {
+    echo $CONTENT_TYPE
+  }
+
+  # Função interna.
+  __get_content_length() {
+    echo $CONTENT_LENGTH
+  }
+
+  # Função interna que retorna o par "Chave: valor" do header a partir da
+  # declaração de variável informada.
+  __get_header_by_var() {
+    # $1: Declaração da variável. Exemplo: (HTTP_USER_AGENT=curl/7.38.0).
+
+    # TODO TU para "Header: sem hífen" e "Header-Com: hífen"
+    local header_key="$(echo "$1" | \
+      cut -d'=' -f1 | \
+      sed "s/^HTTP_//" | \
+      tr '[:upper:]_' '[:lower:]-')"
+      # | TODO: Camel-Case
+
+    local header_value="$(echo "$1" | cut -d'=' -f2-)"
+
+    echo "$header_key: $header_value"
+  }
+
+  env | while read header; do
+    case "$header" in
+      HTTP_*=*)
+        # User-Agent: curl/7.38.0
+        echo "$(__get_header_by_var "$header")" | [ -z "$1" ] && cat - ||
+          (true && return)
+        echo b
+        echo c;;
+    esac
+  done
+
+  # TODO: TU para essas funções:
+  # Cuidado com o return :)
+  unset -f __get_content_type __get_content_length __get_header_by_var
 }
 
 # Retorna o valor do cookie passado. Se nehum cookie for passado, retorna todos
@@ -67,7 +103,6 @@ __get_cookies() {
 
 
 # TODO: __get_body - Como pegar arquivo de upload ?
-# TODO: __get_remote_info - Obter informações de rede da requisição
+# TODO: Obter informações de rede da requisição
 
-
-# Outra referencia: https://www.tutorialspoint.com/http/http_requests.htm
+# Referência: https://www.tutorialspoint.com/http/http_requests.htm

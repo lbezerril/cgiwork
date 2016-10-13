@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# variaveis globais (?)
+
 echo "cgiwork_response"
 
 

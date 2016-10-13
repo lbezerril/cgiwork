@@ -111,3 +111,4 @@ __assert_equals_exit_status() {
 # TODO
 #__assert_not_equals_numeric() {}
 #__assert_not_equals_exit_status() {}
+# deve funcionar com set -e
