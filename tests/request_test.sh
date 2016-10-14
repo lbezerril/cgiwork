@@ -1,6 +1,10 @@
 #!/bin/bash
 
-. ../../assert.sh
+cgiwork_path="$PWD/../core"
+assert_path="$PWD"
+export PATH="$PATH:$cgiwork_path:$assert_path"
+
+. assert
 . cgiwork request
 
 
@@ -16,6 +20,12 @@ __assert_equals_exit_status 0 type __get_method
 __assert_equals_exit_status 0 type __get_uri
 __assert_equals_exit_status 0 type __get_protocol
 __assert_equals_exit_status 0 type __get_parameters
+
+# Testa se as funções internas do módulo não foram carregas
+# TODO: diferente de 0 (dash retorna 127)
+__assert_equals_exit_status 1 type __get_content_type
+__assert_equals_exit_status 1 type __get_content_length
+__assert_equals_exit_status 1 type __get_header_by_var
 
 # Testes da função __get_method
 get_method_test() {

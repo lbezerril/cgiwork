@@ -32,10 +32,10 @@ __get_parameters() {
     [ -z "$1" ] && cat - ||
     (
       # Caso o parâmetro for passado, procura o valor dele.
-      while read __parameter; do
-        local __parameter_key="$(echo "$__parameter" | cut -d'=' -f1)"
-        local __parameter_value="$(echo "$__parameter" | cut -d'=' -f2-)"
-        [ "$1" = "$__parameter_key" ] && echo "$__parameter_value" && return 0
+      while read parameter; do
+        local parameter_key="$(echo "$parameter" | cut -d'=' -f1)"
+        local parameter_value="$(echo "$parameter" | cut -d'=' -f2-)"
+        [ "$1" = "$parameter_key" ] && echo "$parameter_value" && return 0
       done
 
       # Caso o parâmetro passado não foi encontrado, retorna exit status 1.
@@ -79,8 +79,13 @@ __get_headers() {
     case "$header" in
       HTTP_*=*)
         # User-Agent: curl/7.38.0
-        echo "$(__get_header_by_var "$header")" | [ -z "$1" ] && cat - ||
-          (true && return)
+        echo "$(__get_header_by_var "$header")" |
+        (
+          [ -z "$1" ] && cat - ||
+          (
+            [ "$1" = read ] && return 0
+          )
+        )
         echo b
         echo c;;
     esac

@@ -8,9 +8,9 @@ __load_module() {
   # Se nenhum módulo for passado na inicialização do framework, carrega todos.
   [ -z $2 ] && return 0
 
-  local __module=$1; shift
+  local module=$1; shift
   local i; for i in $@; do
-    [ $__module = $i ] && return 0
+    [ $module = $i ] && return 0
   done
 
   return 1
@@ -23,9 +23,9 @@ __start() {
 
   # Lista de módulos suportados. O nome do módulo corresponse ao sufixo do nome
   # do script a ser carregado.
-  local __MODULES="checking request response body"
+  local MODULES="checking request response body"
 
-  local i; for i in $__MODULES; do
+  local i; for i in $MODULES; do
     # Caso __load_module retorne 0, carrega o respectivo módulo.
     __load_module $i $@ && . cgiwork_$i
   done
