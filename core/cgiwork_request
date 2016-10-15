@@ -27,21 +27,27 @@ __get_parameters() {
   [ -z "$QUERY_STRING" ] && return 1
 
   echo "$QUERY_STRING" | tr '&+' '\n ' |
-  (
-    # Caso nenhum parâmetro for passado, retorna o stdout da pipe.
-    [ -z "$1" ] && cat - ||
     (
-      # Caso o parâmetro for passado, procura o valor dele.
-      while read parameter; do
-        local parameter_key="$(echo "$parameter" | cut -d'=' -f1)"
-        local parameter_value="$(echo "$parameter" | cut -d'=' -f2-)"
-        [ "$1" = "$parameter_key" ] && echo "$parameter_value" && return 0
-      done
+      [ -z "$1" ] &&
 
-      # Caso o parâmetro passado não foi encontrado, retorna exit status 1.
-      return 1
+      # Caso nenhum parâmetro for passado, retorna o stdout da pipe.
+      # Como alternativa, pode-se usar "cat -" ao invés do laço while com read.
+      while read parameter; do
+        echo "$parameter"
+      done ||
+
+      # Caso o parâmetro for passado, procura o valor dele.
+      (
+        while read parameter; do
+          local parameter_key="$(echo "$parameter" | cut -d'=' -f1)"
+          local parameter_value="$(echo "$parameter" | cut -d'=' -f2-)"
+          [ "$1" = "$parameter_key" ] && echo "$parameter_value" && return 0
+        done
+
+        # Caso o parâmetro passado não foi encontrado, retorna exit status 1.
+        return 1
+      )
     )
-  )
 }
 
 # TODO
