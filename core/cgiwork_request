@@ -39,9 +39,8 @@ __get_parameters() {
       # Caso o parâmetro for passado, procura o valor dele.
       (
         while read parameter; do
-          local parameter_key="$(echo "$parameter" | cut -d'=' -f1)"
-          local parameter_value="$(echo "$parameter" | cut -d'=' -f2-)"
-          [ "$1" = "$parameter_key" ] && echo "$parameter_value" && return 0
+          # ${parameter%%=*} : key - ${parameter#*=} : value.
+          [ "$1" = "${parameter%%=*}" ] && echo "${parameter#*=}" && return 0
         done
 
         # Caso o parâmetro passado não foi encontrado, retorna exit status 1.
@@ -50,56 +49,78 @@ __get_parameters() {
     )
 }
 
-# TODO
+# Retorna o valor do header passado. Se nehum header for passado, retorna todos
+# no formato "Key: value", um em cada linha.
 __get_headers() {
   # $1: Nome do header a ser buscado (opcional).
 
-  # Função interna.
-  __get_content_type() {
-    echo $CONTENT_TYPE
+  # Função interna que decide se e como imprimir determinado valor de header.
+  __print_header() {
+    # $1: Header key.
+    # $2: Header value.
+    # $3: Header key a ser buscado (opcional).
+
+    # Se o header key a ser buscado não foi passado, imprime o par de header
+    # "Key: value".
+    if [ -z "$3" ]; then
+      echo "$1: $2"
+    else
+      # Redefine os parâmetros posicionais do shell trocando os nomes de header
+      # ($1 e $2) para minúsculo a fim de compará-los sem maiores problemas.
+      set -- \
+        "$(echo "$1" | tr '[:upper:]' '[:lower:]')" \
+        "$2" \
+        "$(echo "$3" | tr '[:upper:]' '[:lower:]')"
+
+      # Se o header key a ser buscado for encontrado, imprime o valor dele.
+      if [ "$3" = "$1" ]; then
+        echo "$2"
+        # O único fluxo que esta função retorna um non-zero exit status, é
+        # quando o header key a ser buscado foi encontrado.
+        return
+      fi
+    fi
+
+    return 1
   }
 
-  # Função interna.
-  __get_content_length() {
-    echo $CONTENT_LENGTH
-  }
-
-  # Função interna que retorna o par "Chave: valor" do header a partir da
-  # declaração de variável informada.
-  __get_header_by_var() {
-    # $1: Declaração da variável. Exemplo: (HTTP_USER_AGENT=curl/7.38.0).
-
-    # TODO TU para "Header: sem hífen" e "Header-Com: hífen"
-    local header_key="$(echo "$1" | \
-      cut -d'=' -f1 | \
-      sed "s/^HTTP_//" | \
-      tr '[:upper:]_' '[:lower:]-')"
-      # | TODO: Camel-Case
-
-    local header_value="$(echo "$1" | cut -d'=' -f2-)"
-
-    echo "$header_key: $header_value"
-  }
-
-  env | while read header; do
+  # Para shells posix, pode-se usar o builtin "set". Para shells non-posix - a
+  # menos que "set -o posix" for especificado - não é recomendado, visto que as
+  # funções e o conteúdo delas também são imprimidos. Ao usar set, vale lembrar
+  # que mesmo shell variables são imprimidas. Outra opção é usar o "env".
+  printenv | while read header; do
     case "$header" in
-      HTTP_*=*)
-        # User-Agent: curl/7.38.0
-        echo "$(__get_header_by_var "$header")" |
-        (
-          [ -z "$1" ] && cat - ||
-          (
-            [ "$1" = read ] && return 0
-          )
-        )
-        echo b
-        echo c;;
-    esac
-  done
 
-  # TODO: TU para essas funções:
-  # Cuidado com o return :)
-  unset -f __get_content_type __get_content_length __get_header_by_var
+      CONTENT_TYPE=?*)
+      # ${header#*=} : value.
+      __print_header "Content-Type" "${header#*=}" "$1" && return 1;;
+
+      CONTENT_LENGTH=?*)
+      # ${header#*=} : value.
+      __print_header "Content-Length" "${header#*=}" "$1" && return 1;;
+
+      HTTP_?*=?*)
+        local header_key="${header%%=*}" # Remove tudo do '=' para a direita.
+        header_key="${header_key#HTTP_}" # Remove o início 'HTTP_'.
+        header_key="$(echo "$header_key" | tr '[:upper:]_' '[:lower:]-')"
+        # TODO: Camel-Case
+
+        # ${header#*=} : value.
+        __print_header "$header_key" "${header#*=}" "$1" && return 1;;
+
+    esac
+
+  # Se o header key a ser buscado foi encontrado, um non-zero exit status é
+  # retornado aqui com a finalidade de definir esta variável.
+  done || local found=0
+
+  # Remove esta função a fim evitar que ela seja acessível por fora.
+  unset -f __print_header
+
+  # Se o header key a ser buscado não foi passado, retorna 0. Se foi passado e
+  # foi encontrado, retorna 0 (variável found definida como 0). Se foi passado
+  # mas não foi encontrado, retorna 1 (variável found não definida).
+  [ -z "$1" ] && return 0 || return ${found:-1}
 }
 
 # Retorna o valor do cookie passado. Se nehum cookie for passado, retorna todos

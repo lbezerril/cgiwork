@@ -7,14 +7,6 @@ export PATH="$PATH:$cgiwork_path:$assert_path"
 . assert
 . cgiwork request
 
-
-
-# TODO
-#__get_headers "Host"
-#__get_headers
-
-
-
 # Testa se as funções do módulo foram carregas.
 __assert_equals_exit_status 0 type __get_method
 __assert_equals_exit_status 0 type __get_uri
@@ -23,9 +15,7 @@ __assert_equals_exit_status 0 type __get_parameters
 
 # Testa se as funções internas do módulo não foram carregas.
 # TODO: diferente de 0 (dash retorna 127)
-__assert_equals_exit_status 1 type __get_content_type
-__assert_equals_exit_status 1 type __get_content_length
-__assert_equals_exit_status 1 type __get_header_by_var
+__assert_equals_exit_status 1 type __print_header
 
 # Testes da função __get_method.
 get_method_test() {
@@ -91,8 +81,81 @@ get_parameters_without_args_test() {
   done;
 }
 
+# Testes da função __get_headers passando argumento.
+get_headers_with_args_test() {
+  __assert_equals_string "" "$(__get_headers Content-Type)"
+  __assert_equals_exit_status 1 __get_headers Content-Type
+
+  export CONTENT_TYPE="application/x-www-form-urlencoded"
+
+  __assert_equals_string "application/x-www-form-urlencoded" "$(__get_headers Content-Type)"
+  __assert_equals_exit_status 0 __get_headers Content-Type
+
+  __assert_equals_string "" "$(__get_headers Content-Length)"
+  __assert_equals_exit_status 1 __get_headers Content-Length
+
+  export CONTENT_LENGTH=11
+
+  __assert_equals_string "11" "$(__get_headers Content-Length)"
+  __assert_equals_exit_status 0 __get_headers Content-Length
+
+  __assert_equals_string "" "$(__get_headers Host)"
+  __assert_equals_exit_status 1 __get_headers Host
+
+  export HTTP_HOST=localhost
+
+  __assert_equals_string "localhost" "$(__get_headers Host)"
+  __assert_equals_exit_status 0 __get_headers Host
+
+  __assert_equals_string "" "$(__get_headers User-Agent)"
+  __assert_equals_exit_status 1 __get_headers User-Agent
+
+  export HTTP_USER_AGENT=curl/7.38.0
+
+  __assert_equals_string "curl/7.38.0" "$(__get_headers user-Agent)"
+  __assert_equals_exit_status 0 __get_headers user-Agent
+
+  export HTTP_HTTP_HTTP="\"this is valid\""
+  __assert_equals_string "\"this is valid\"" "$(__get_headers Http-Http)"
+  __assert_equals_exit_status 0 __get_headers Http-Http
+
+  __assert_equals_exit_status 1 type __print_header
+
+  unset -v CONTENT_TYPE CONTENT_LENGTH HTTP_HOST HTTP_USER_AGENT HTTP_HTTP_HTTP
+}
+
+# Testes da função __get_headers sem passar argumento.
+get_headers_without_args_test() {
+  # $@: Lista dos pares "Key: value" de header esperado.
+
+  __assert_equals_string "" "$(__get_headers)"
+  __assert_equals_exit_status 0 __get_headers # TODO Retorna 1?
+
+  export HTTP_USER_AGENT=curl
+  export HTTP_HOST=localhost
+  export CONTENT_LENGTH=0
+  export CONTENT_TYPE="application/json"
+  __assert_equals_exit_status 0 __get_headers
+
+  __get_headers | while read header; do
+    __assert_equals_string "$1" "$header"
+    shift
+  done;
+
+  __assert_equals_exit_status 1 type __print_header
+  unset -v HTTP_USER_AGENT HTTP_HOST CONTENT_LENGTH CONTENT_TYPE
+}
+
 get_method_test
 get_uri_test
 get_protocol_test
 get_parameters_with_args_test
 get_parameters_without_args_test "id=1" "product=2 2"
+get_headers_with_args_test
+get_headers_without_args_test \
+  "user-agent: curl" \
+  "host: localhost" \
+  "Content-Length: 0" \
+  "Content-Type: application/json"
+
+#__assert_resume (trabalha com a análise de variáveis internas gravadas)
