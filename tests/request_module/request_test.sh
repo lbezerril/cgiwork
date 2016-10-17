@@ -1,9 +1,5 @@
 #!/bin/bash
 
-cgiwork_path="$PWD/../core"
-assert_path="$PWD"
-export PATH="$PATH:$cgiwork_path:$assert_path"
-
 . assert
 . cgiwork request
 

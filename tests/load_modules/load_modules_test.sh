@@ -7,10 +7,6 @@
 # . cgiwork checking request response body
 # ./cgiwork (terá o comportamento normal, só não irá carregar as funções)
 
-cgiwork_path="$PWD/../core"
-assert_path="$PWD"
-export PATH="$PATH:$cgiwork_path:$assert_path"
-
 . assert
 . cgiwork request
 
