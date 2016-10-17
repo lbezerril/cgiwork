@@ -1,0 +1,55 @@
+#!/usr/bin/env sh
+
+# Colore a mensagem com a cor informada.
+# $1: Mensagem.
+# $2: Cor.
+
+[ -z "$2" ] && exit 1
+
+# Se houver o terceiro argumento, e o primeiro for "-n", atribui em uma
+# variável a opção para ser usada no comando echo.
+if [ ! -z "$3" ] && [ "$1" = "-n" ]; then
+  option="n"
+  shift
+fi
+
+# Atribui o código da cor informada.
+NC='\033[0m'
+case "$2" in
+  "BLACK")
+    color_code='\033[0;30m';;
+  "BLUE")
+    color_code='\033[0;34m';;
+  "CYAN")
+    color_code='\033[0;36m';;
+  "DARKGRAY")
+    color_code='\033[1;30m';;
+  "GREEN")
+    color_code='\033[0;32m';;
+  "LIGHTBLUE")
+    color_code='\033[1;34m';;
+  "LIGHTCYAN")
+    color_code='\033[1;36m';;
+  "LIGHTGRAY")
+    color_code='\033[0;37m';;
+  "LIGHTGREEN")
+    color_code='\033[1;32m';;
+  "LIGHTPURPLE")
+    color_code='\033[1;35m';;
+  "LIGHTRED")
+    color_code='\033[1;31m';;
+  "ORANGE")
+    color_code='\033[0;33m';;
+  "PURPLE")
+    color_code='\033[0;35m';;
+  "RED")
+    color_code='\033[0;31m';;
+  "WHITE")
+    color_code='\033[1;37m';;
+  "YELLOW")
+    color_code='\033[1;33m';;
+  *)
+    color_code=$NC;;
+esac
+
+/bin/echo -e${option} "${color_code}${1}${NC}"
