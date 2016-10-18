@@ -15,3 +15,5 @@ get_uri_test() {
 }
 
 get_uri_test
+
+__assert_status

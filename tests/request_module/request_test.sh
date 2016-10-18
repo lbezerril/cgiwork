@@ -13,4 +13,4 @@ __assert_equals_exit_status 0 type __get_parameters
 # TODO: diferente de 0 (dash retorna 127)
 __assert_equals_exit_status 1 type __print_header
 
-#__assert_resume (trabalha com a análise de variáveis internas gravadas)
+__assert_status

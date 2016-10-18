@@ -1,5 +1,8 @@
 #!/bin/sh
 
+__assert_successes=0
+__assert_failures=0
+
 # Realiza um teste de string. Caso o valor a ser testado foi o mesmo que o
 # esperado, retorna 0. Caso contrário retorna 1.
 __assert_equals_string() {
@@ -9,9 +12,13 @@ __assert_equals_string() {
   [ "$1" = "$2" ]
   local exit_status=$?
 
-  [ $exit_status -eq 0 ] &&
-    message "Success!" LIGHTGREEN ||
+  if [ $exit_status -eq 0 ]; then
+    __assert_successes=$((__assert_successes+1))
+    message "Success!" LIGHTGREEN
+  else
+    __assert_failures=$((__assert_failures+1))
     message "Fail: string expected: [$1] but was: [$2]" LIGHTRED
+  fi
 
   return $exit_status
 }
@@ -25,9 +32,13 @@ __assert_not_equals_string() {
   [ "$1" != "$2" ]
   local exit_status=$?
 
-  [ $exit_status -eq 0 ] &&
-    message "Success!" LIGHTGREEN ||
+  if [ $exit_status -eq 0 ]; then
+    __assert_successes=$((__assert_successes+1))
+    message "Success!" LIGHTGREEN
+  else
+    __assert_failures=$((__assert_failures+1))
     message "Fail: values should be different. Actual: [$1]" LIGHTRED
+  fi
 
   return $exit_status
 }
@@ -42,9 +53,13 @@ __assert_equals_numeric() {
   [ $1 -eq $2 ] 2>/dev/null
   local exit_status=$?
 
-  [ $exit_status -eq 0 ] &&
-    message "Success!" LIGHTGREEN ||
+  if [ $exit_status -eq 0 ]; then
+    __assert_successes=$((__assert_successes+1))
+    message "Success!" LIGHTGREEN
+  else
+    __assert_failures=$((__assert_failures+1))
     message "Fail: numeric expected: [$1] but was: [$2]" LIGHTRED
+  fi
 
   return $exit_status
 }
@@ -65,14 +80,24 @@ __assert_equals_exit_status() {
   [ $expected -eq $real ] 2>/dev/null
   local exit_status=$?
 
-  [ $exit_status -eq 0 ] &&
-    message "Success!" LIGHTGREEN ||
-    message "Fail: exit status expected: [$expected] but was: [$real]" LIGHTRED
+  if [ $exit_status -eq 0 ]; then
+    __assert_successes=$((__assert_successes+1))
+    message "Success!" LIGHTGREEN
+  else
+    __assert_failures=$((__assert_failures+1))
+    message "Fail: exit status expected: [$expected] but was: [$real]"\
+      LIGHTRED
+  fi
 
   return $exit_status
+}
+
+# Usado no final de uma bateria de testes. Retorna um exit status de acordo com
+# quantidade de testes não passados.
+__assert_status() {
+  return $__assert_failures
 }
 
 # TODO
 #__assert_not_equals_numeric() {}
 #__assert_not_equals_exit_status() {}
-# deve funcionar com set -e

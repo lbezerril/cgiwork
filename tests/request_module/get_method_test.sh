@@ -15,3 +15,7 @@ get_method_test() {
 }
 
 get_method_test
+
+__assert_status
+# __assert_return
+# __assert_resume

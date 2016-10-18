@@ -30,3 +30,5 @@ get_headers_without_args_test \
   "host: localhost" \
   "Content-Length: 0" \
   "Content-Type: application/json"
+
+__assert_status

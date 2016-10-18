@@ -20,3 +20,5 @@ get_parameters_without_args_test() {
 }
 
 get_parameters_without_args_test "id=1" "product=2 2"
+
+__assert_status
