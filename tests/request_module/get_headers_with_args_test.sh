@@ -49,4 +49,4 @@ get_headers_with_args_test() {
 
 get_headers_with_args_test
 
-__assert_status
+__assert_exit

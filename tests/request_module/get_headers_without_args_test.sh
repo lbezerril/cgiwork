@@ -31,4 +31,4 @@ get_headers_without_args_test \
   "Content-Length: 0" \
   "Content-Type: application/json"
 
-__assert_status
+__assert_exit

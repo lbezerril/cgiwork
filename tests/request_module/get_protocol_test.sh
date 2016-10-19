@@ -16,4 +16,4 @@ get_protocol_test() {
 
 get_protocol_test
 
-__assert_status
+__assert_exit

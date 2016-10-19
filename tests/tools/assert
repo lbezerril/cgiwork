@@ -14,10 +14,10 @@ __assert_equals_string() {
 
   if [ $exit_status -eq 0 ]; then
     __assert_successes=$((__assert_successes+1))
-    message "Success!" LIGHTGREEN
+    echolor "Success!" LIGHTGREEN
   else
     __assert_failures=$((__assert_failures+1))
-    message "Fail: string expected: [$1] but was: [$2]" LIGHTRED
+    echolor "Fail: string expected: [$1] but was: [$2]" LIGHTRED
   fi
 
   return $exit_status
@@ -34,10 +34,10 @@ __assert_not_equals_string() {
 
   if [ $exit_status -eq 0 ]; then
     __assert_successes=$((__assert_successes+1))
-    message "Success!" LIGHTGREEN
+    echolor "Success!" LIGHTGREEN
   else
     __assert_failures=$((__assert_failures+1))
-    message "Fail: values should be different. Actual: [$1]" LIGHTRED
+    echolor "Fail: values should be different. Actual: [$1]" LIGHTRED
   fi
 
   return $exit_status
@@ -55,10 +55,10 @@ __assert_equals_numeric() {
 
   if [ $exit_status -eq 0 ]; then
     __assert_successes=$((__assert_successes+1))
-    message "Success!" LIGHTGREEN
+    echolor "Success!" LIGHTGREEN
   else
     __assert_failures=$((__assert_failures+1))
-    message "Fail: numeric expected: [$1] but was: [$2]" LIGHTRED
+    echolor "Fail: numeric expected: [$1] but was: [$2]" LIGHTRED
   fi
 
   return $exit_status
@@ -82,10 +82,10 @@ __assert_equals_exit_status() {
 
   if [ $exit_status -eq 0 ]; then
     __assert_successes=$((__assert_successes+1))
-    message "Success!" LIGHTGREEN
+    echolor "Success!" LIGHTGREEN
   else
     __assert_failures=$((__assert_failures+1))
-    message "Fail: exit status expected: [$expected] but was: [$real]"\
+    echolor "Fail: exit status expected: [$expected] but was: [$real]"\
       LIGHTRED
   fi
 
@@ -94,7 +94,7 @@ __assert_equals_exit_status() {
 
 # Usado no final de uma bateria de testes. Retorna um exit status de acordo com
 # quantidade de testes não passados.
-__assert_status() {
+__assert_exit() {
   return $__assert_failures
 }
 

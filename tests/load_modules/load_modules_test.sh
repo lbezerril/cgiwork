@@ -21,3 +21,5 @@ __assert_equals_exit_status 0 type __get_protocol
 __assert_equals_exit_status 0 type __get_parameters
 __assert_equals_exit_status 0 type __get_headers
 __assert_equals_exit_status 0 type __get_cookies
+
+__assert_exit

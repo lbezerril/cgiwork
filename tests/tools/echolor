@@ -1,0 +1,95 @@
+#!/bin/sh
+
+###############################################################################
+#                                                                             #
+#                                   echolor                                   #
+#                                                                             #
+#  Descrição:                                                                 #
+#    Colore uma mensagem de acordo com a cor informada.                       #
+#                                                                             #
+#  Uso:                                                                       #
+#    echolor [-n] "String" COLOR                                              #
+#                                                                             #
+#  Exemplo:                                                                   #
+#    echolor -n "Texto em \n\t verde claro" LIGHTGREEN                        #
+#                                                                             #
+#  Opções:                                                                    #
+#    COLOR                                                                    #
+#      Uma das seguintes cores: BLACK, BLUE, CYAN, DARKGRAY, GREEN,           #
+#      LIGHTBLUE, LIGHTCYAN, LIGHTGRAY, LIGHTGREEN, LIGHTPURPLE, LIGHTRED,    #
+#      ORANGE, PURPLE, RED, WHITE ou YELLOW. Se outro valor for informado, a  #
+#      string não será colorida.                                              #
+#                                                                             #
+#    -n                                                                       #
+#      Evita quebra de linha.                                                 #
+#                                                                             #
+#  WWW:                                                                       #
+#    github.com/LBezerril/sh-utils/blob/master/echolor                        #
+#    * Esse script faz parte de um projeto de utilitários em POSIX Shell      #
+#      (github.com/LBezerril/sh-utils)                                        #
+#                                                                             #
+#  Documentação:                                                              #
+#    github.com/LBezerril/sh-utils#echolor                                    #
+#                                                                             #
+#  Autor:                                                                     #
+#    LBezerril (github.com/LBezerril)                                         #
+#                                                                             #
+#  Licença:                                                                   #
+#    GNU GPL v3 (github.com/LBezerril/sh-utils/blob/master/LICENSE)           #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+if [ -z "$2" ]; then
+  /usr/bin/env echo "Use: echolor [-n] \"String\" COLOR"
+  exit 1
+fi
+
+# Se houver o terceiro argumento, e o primeiro for "-n", atribui em uma
+# variável a opção para ser usada no comando echo.
+if [ ! -z "$3" ] && [ "$1" = "-n" ]; then
+  option="n"
+  shift
+fi
+
+NC='\033[0m'
+
+# Atribui o código da cor informada.
+case "$2" in
+  "BLACK")
+    color_code='\033[0;30m';;
+  "BLUE")
+    color_code='\033[0;34m';;
+  "CYAN")
+    color_code='\033[0;36m';;
+  "DARKGRAY")
+    color_code='\033[1;30m';;
+  "GREEN")
+    color_code='\033[0;32m';;
+  "LIGHTBLUE")
+    color_code='\033[1;34m';;
+  "LIGHTCYAN")
+    color_code='\033[1;36m';;
+  "LIGHTGRAY")
+    color_code='\033[0;37m';;
+  "LIGHTGREEN")
+    color_code='\033[1;32m';;
+  "LIGHTPURPLE")
+    color_code='\033[1;35m';;
+  "LIGHTRED")
+    color_code='\033[1;31m';;
+  "ORANGE")
+    color_code='\033[0;33m';;
+  "PURPLE")
+    color_code='\033[0;35m';;
+  "RED")
+    color_code='\033[0;31m';;
+  "WHITE")
+    color_code='\033[1;37m';;
+  "YELLOW")
+    color_code='\033[1;33m';;
+  *)
+    color_code=$NC;;
+esac
+
+/usr/bin/env echo -e${option} "${color_code}${1}${NC}"

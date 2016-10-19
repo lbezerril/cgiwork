@@ -16,4 +16,4 @@ get_uri_test() {
 
 get_uri_test
 
-__assert_status
+__assert_exit

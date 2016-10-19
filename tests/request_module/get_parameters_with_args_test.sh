@@ -20,4 +20,4 @@ get_parameters_with_args_test() {
 
 get_parameters_with_args_test
 
-__assert_status
+__assert_exit
