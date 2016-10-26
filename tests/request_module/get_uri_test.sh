@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. assert
+. shelltest
 . cgiwork request
 
 # Testes da função __get_uri.

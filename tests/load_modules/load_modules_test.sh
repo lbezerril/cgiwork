@@ -7,7 +7,7 @@
 # . cgiwork checking request response body
 # ./cgiwork (terá o comportamento normal, só não irá carregar as funções)
 
-. assert
+. shelltest
 . cgiwork request
 
 # TODO: diferente de 0 (dash retorna 127)

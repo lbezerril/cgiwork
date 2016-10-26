@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. assert
+. shelltest
 . cgiwork request
 
 # Testa se as funções do módulo foram carregas.
