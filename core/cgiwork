@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Lista de módulos suportados. O nome do módulo corresponse ao sufixo do nome
+# do script a ser carregado.
+__MODULES="checking request response body"
+
 # Verifica se o módulo deverá ser carregado.
 __load_module() {
   # $1: Módulo a ser validado.
@@ -24,12 +28,8 @@ __load_module() {
 __start() {
   # $@: Lista de módulos passados para o framework.
 
-  # Lista de módulos suportados. O nome do módulo corresponse ao sufixo do nome
-  # do script a ser carregado.
-  local MODULES="checking request response body"
-
   local i
-  for i in $MODULES; do
+  for i in $__MODULES; do
     # Caso __load_module retorne 0, carrega o respectivo módulo.
     __load_module $i $@ && . cgiwork_$i
   done
@@ -37,5 +37,6 @@ __start() {
 
 __start $@
 
-# Remove funções que não serão mais usadas.
+# Remove constante e funções que não serão mais usadas.
+unset -v __MODULES
 unset -f __load_module __start
