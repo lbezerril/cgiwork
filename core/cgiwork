@@ -23,19 +23,22 @@ __load_module() {
   return 1
 }
 
-# Primeiro método do framework a ser chamado. Determina quais módulos irão ser
+# Primeiro método do framework a ser chamado. Gerencia quais módulos irão ser
 # carregados.
 __start() {
-  # $@: Lista de módulos passados para o framework.
+  # stdin: Lista de módulos passados para o framework.
+
+  local modules
+  [ -t 0 ] || read modules
 
   local i
   for i in $__MODULES; do
     # Caso __load_module retorne 0, carrega o respectivo módulo.
-    __load_module $i $@ && . cgiwork_$i
+    __load_module $i $modules && . cgiwork_$i
   done
 }
 
-__start $@
+__start
 
 # Remove constante e funções que não serão mais usadas.
 unset -v __MODULES

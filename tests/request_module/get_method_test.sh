@@ -1,19 +1,23 @@
 #!/bin/sh
 
 . shelltest
-. cgiwork request
 
-# Testes da função __get_method.
-get_method_test() {
-  __assert_equals_string "" "$(__get_method)"
-  __assert_equals_exit_status 1 __get_method
+echo request | {
+  . cgiwork
 
-  local REQUEST_METHOD=POST
+  # Testes da função __get_method.
+  get_method_test() {
+    __assert_equals_string "" "$(__get_method)"
+    __assert_equals_exit_status 1 __get_method
 
-  __assert_equals_string "POST" "$(__get_method)"
-  __assert_equals_exit_status 0 __get_method
+    local REQUEST_METHOD=POST
+
+    __assert_equals_string "POST" "$(__get_method)"
+    __assert_equals_exit_status 0 __get_method
+  }
+
+  get_method_test
+
+  __assert_exit
+
 }
-
-get_method_test
-
-__assert_exit
