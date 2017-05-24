@@ -4,9 +4,9 @@
 # do script a ser carregado.
 __MODULES="checking request response body"
 
-# Verifica se o módulo deverá ser carregado.
-__load_module() {
-  # $1: Módulo a ser validado.
+# Verifica se o módulo a ser analisado deverá ser carregado.
+__should_the_module_be_loaded() {
+  # $1: Módulo suportado a ser analisado.
   # $@: Lista de módulos passados para o framework.
 
   # Se nenhum módulo for passado na inicialização do framework, carrega todos.
@@ -28,13 +28,13 @@ __load_module() {
 __start() {
   # stdin: Lista de módulos passados para o framework.
 
-  local modules
-  [ -t 0 ] || read modules
+  local modules_received
+  [ -t 0 ] || read modules_received
 
   local i
   for i in $__MODULES; do
-    # Caso __load_module retorne 0, carrega o respectivo módulo.
-    __load_module $i $modules && . cgiwork_$i
+    # Determina se o módulo $i será carregado.
+    __should_the_module_be_loaded $i $modules_received && . cgiwork_$i
   done
 }
 
@@ -42,4 +42,4 @@ __start
 
 # Remove constante e funções que não serão mais usadas.
 unset -v __MODULES
-unset -f __load_module __start
+unset -f __should_the_module_be_loaded __start
