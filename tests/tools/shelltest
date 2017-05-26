@@ -5,7 +5,7 @@ __assert_failures=0
 
 # Realiza um teste de string. Caso o valor a ser testado foi o mesmo que o
 # esperado, retorna 0. Caso contrário retorna 1.
-__assert_equals_string() {
+_assert_equals_string() {
   # $1: Valor esperado.
   # $2: Valor a ser testado.
 
@@ -25,7 +25,7 @@ __assert_equals_string() {
 
 # Realiza um teste de string. Se os valores forem diferentes, retorna 0. Caso
 # contrário retorna 1.
-__assert_not_equals_string() {
+_assert_not_equals_string() {
   # $1: Primeiro valor a ser comparado.
   # $2: Segundo valor a ser comparado.
 
@@ -46,7 +46,7 @@ __assert_not_equals_string() {
 # Realiza um teste numérico. Caso o valor a ser testado foi o mesmo que o
 # esperado, retorna 0. Caso contrário retorna 1. Se os valores informados não
 # forem numéricos, retorna 2.
-__assert_equals_numeric() {
+_assert_equals_numeric() {
   # $1: Valor esperado.
   # $2: Valor a ser testado.
 
@@ -67,7 +67,7 @@ __assert_equals_numeric() {
 # Executa a função ou comando passado e realiza um teste de exit status. Se o
 # exit status foi o mesmo que o esperado, retorna 0. Caso contrário retorna 1.
 # Se o exit status esperado informado não for numérico, retorna 2.
-__assert_equals_exit_status() {
+_assert_equals_exit_status() {
   # $1: Exit status esperado do retorna da função ou comando a ser testado.
   # $2: Função ou comando a ser testado.
 
@@ -94,10 +94,10 @@ __assert_equals_exit_status() {
 
 # Usado no final de uma bateria de testes. Retorna um exit status de acordo com
 # quantidade de testes não passados.
-__assert_exit() {
+_assert_exit() {
   return $__assert_failures
 }
 
 # TODO
-#__assert_not_equals_numeric() {}
-#__assert_not_equals_exit_status() {}
+#_assert_not_equals_numeric() {}
+#_assert_not_equals_exit_status() {}

@@ -5,19 +5,19 @@
 echo request | {
   . cgiwork
 
-  # Testes da função __get_uri.
+  # Testes da função _get_uri.
   get_uri_test() {
-    __assert_equals_string "" "$(__get_uri)"
-    __assert_equals_exit_status 1 __get_uri
+    _assert_equals_string "" "$(_get_uri)"
+    _assert_equals_exit_status 1 _get_uri
 
     local REQUEST_URI=/
 
-    __assert_equals_string "/" "$(__get_uri)"
-    __assert_equals_exit_status 0 __get_uri
+    _assert_equals_string "/" "$(_get_uri)"
+    _assert_equals_exit_status 0 _get_uri
   }
 
   get_uri_test
 
-  __assert_exit
+  _assert_exit
 
 }

@@ -8,16 +8,16 @@ echo "cgiwork_body"
 
 # TODO: Definir nome desta função
 #ARRAY+=("visitor_number=$RANDOM");
-#__tag_page "template.html" $ARRAY
-#cat template.html | __tag_page $ARRAY
+#_tag_page "template.html" $ARRAY
+#cat template.html | _tag_page $ARRAY
 
 
 # Json e XML
-#__marshal_json $ARRAY # Retorna formato json
-#cat template.json | __unmarshal_json # Retorna objeto array
+#_marshal_json $ARRAY # Retorna formato json
+#cat template.json | _unmarshal_json # Retorna objeto array
 
 
 
 # TODO: echos não serão echoados até chamar esta função, permitindo assim setar
 # o status code depois de montar o body (REST)
-#__flush_body
+#_flush_body

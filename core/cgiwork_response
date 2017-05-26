@@ -5,11 +5,11 @@
 echo "cgiwork_response"
 
 
-# __set sem argumento
-#__set_protocol "HTT/1.1"
-#__set_status 200
-#__set_status 200 "OK"
-#__set_header "Content-type" "text/html"
-#__set_headers $ARRAY # Será necessário ?
+# _set sem argumento
+#_set_protocol "HTT/1.1"
+#_set_status 200
+#_set_status 200 "OK"
+#_set_header "Content-type" "text/html"
+#_set_headers $ARRAY # Será necessário ?
 # Commita headers (echo "\n") - Define headers default
-#__flush_buffer
+#_flush_buffer

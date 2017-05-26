@@ -1,26 +1,26 @@
 #!/bin/sh
 
 # Retorna o método utilizado na requisição.
-__get_method() {
+_get_method() {
   # Caso não encontrado, retorna exit status 1.
   [ -z "$REQUEST_METHOD" ] && return 1 || echo "$REQUEST_METHOD"
 }
 
 # Retorna o URI utilizado na requisição.
-__get_uri() {
+_get_uri() {
   # Caso não encontrado, retorna exit status 1.
   [ -z "$REQUEST_URI" ] && return 1 || echo "$REQUEST_URI"
 }
 
 # Retorna o protocolo utilizado na requisição.
-__get_protocol() {
+_get_protocol() {
   # Caso não encontrado, retorna exit status 1.
   [ -z "$SERVER_PROTOCOL" ] && return 1 || echo "$SERVER_PROTOCOL"
 }
 
 # Retorna o valor do parâmetro passado. Se nehum parâmetro for passado, retorna
 # todos no formato key=value, um em cada linha.
-__get_parameters() {
+_get_parameters() {
   # $1: Nome do parâmetro a ser buscado (opcional).
 
   # Caso não encontrado, retorna exit status 1.
@@ -51,7 +51,7 @@ __get_parameters() {
 
 # Retorna o valor do header passado. Se nehum header for passado, retorna todos
 # no formato "Key: value", um em cada linha.
-__get_headers() {
+_get_headers() {
   # $1: Nome do header a ser buscado (opcional).
 
   # Função interna que decide se e como imprimir determinado valor de header.
@@ -125,7 +125,7 @@ __get_headers() {
 
 # Retorna o valor do cookie passado. Se nehum cookie for passado, retorna todos
 # no formato key=value, um em cada linha.
-__get_cookies() {
+_get_cookies() {
   # $1: Nome do cookie a ser buscado (opcional).
 
   # Caso não encontrado, retorna exit status 1.
@@ -134,7 +134,7 @@ __get_cookies() {
 
 
 
-# TODO: __get_body - Como pegar arquivo de upload ?
+# TODO: _get_body - Como pegar arquivo de upload ?
 # TODO: Obter informações de rede da requisição
 
 # Referência: https://www.tutorialspoint.com/http/http_requests.htm

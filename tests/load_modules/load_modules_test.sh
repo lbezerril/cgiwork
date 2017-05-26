@@ -13,17 +13,18 @@ echo request | {
   . cgiwork
 
   # TODO: diferente de 0 (dash retorna 127)
-  __assert_equals_exit_status 1 type __start
-  __assert_equals_exit_status 1 type __load_module
+  _assert_equals_exit_status 1 type __start
+  _assert_equals_exit_status 1 type __should_the_module_be_loaded
+  # TODO: __MODULES
 
   # Testa se as funções do módulo foram carregas
-  __assert_equals_exit_status 0 type __get_method
-  __assert_equals_exit_status 0 type __get_uri
-  __assert_equals_exit_status 0 type __get_protocol
-  __assert_equals_exit_status 0 type __get_parameters
-  __assert_equals_exit_status 0 type __get_headers
-  __assert_equals_exit_status 0 type __get_cookies
+  _assert_equals_exit_status 0 type _get_method
+  _assert_equals_exit_status 0 type _get_uri
+  _assert_equals_exit_status 0 type _get_protocol
+  _assert_equals_exit_status 0 type _get_parameters
+  _assert_equals_exit_status 0 type _get_headers
+  _assert_equals_exit_status 0 type _get_cookies
 
-  __assert_exit
+  _assert_exit
 
 }

@@ -5,4 +5,4 @@ echo "cgiwork_checking"
 
 # TODO: Rever nome da função
 # A função define alguns headers padrão, exemplo status
-#__check_expected_method "POST"
+#_check_expected_method "POST"
